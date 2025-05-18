@@ -1,16 +1,35 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+class MaxStack<T : Comparable<T>> {
+    private val stack = ArrayDeque<T>()
+    private val maxStack = ArrayDeque<T>()
+
+    fun push(value: T) {
+        stack.addLast(value)
+        if (maxStack.isEmpty() || value >= maxStack.last()) {
+            maxStack.addLast(value)
+        }
     }
+
+    fun pop(): T? {
+        if (stack.isEmpty()) return null
+        val value = stack.removeLast()
+        if (value == maxStack.last()) {
+            maxStack.removeLast()
+        }
+        return value
+    }
+
+    fun max(): T? = maxStack.lastOrNull()
+}
+
+fun main() {
+    val ms = MaxStack<Int>()
+    ms.push(3)
+    ms.push(1)
+    ms.push(5)
+    println(ms.max())
+    ms.pop()
+    println(ms.max())
 }
